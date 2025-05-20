@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysqldb
+  namespace: backend
+  labels:
+    app:  mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:8
+        name: mysqldb
+        env:
+        - name:  MYSQL_DATABASE
+          value: devoteamteam33
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: "true"
+        ports:
+        - containerPort: 3306

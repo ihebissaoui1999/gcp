@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-deployment
+  namespace: front
+  labels:
+    app: front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front
+  template:
+    metadata:
+      labels:
+        app:  front
+    spec:
+      containers:
+      - name: front
+        image: iheb1999/front:v12
+        ports:
+        - containerPort: 80

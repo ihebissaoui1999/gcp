@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: keycloak
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:26.1.1
+          args: ["start-dev", "--http-relative-path=/auth"]
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: admin
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: admin
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: KC_METRICS_ENABLED
+              value: "true"
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_HTTPS_ENABLED
+              value: "false"
+            - name: KC_DB
+              value: postgres
+            - name: KC_DB_USERNAME
+              value: admin
+            - name: KC_DB_PASSWORD
+              value: admin
+            - name: KC_HOSTNAME_STRICT_HTTPS
+              value: "false"
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_DB
+            - name: KC_DB_URL
+              value: jdbc:postgresql://postgres-db/$(POSTGRES_DB)
+
+          ports:
+            - containerPort: 8080
+

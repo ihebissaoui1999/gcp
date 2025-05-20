@@ -1,0 +1,115 @@
+/* ===== Conteneur principal ===== */
+.container.mt-4 {
+  margin-left: 120px; /* Décalage pour la sidebar */
+  padding: 30px;
+  background-color: #f4f4f9;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Alerte « aucun matériel » */
+.container.mt-4 .alert.alert-warning {
+  border-radius: 8px;
+  background: #fff3cd;
+  color: #856404;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+/* ===== Grille responsive ===== */
+.row.g-4 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* ===== Cartes matériel ===== */
+.row.g-4 .card {
+  background: #ffffff;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  width: 100%;
+  max-width: 350px;
+}
+
+.row.g-4 .card:hover {
+  transform: scale(1.02);
+}
+
+/* Image en tête de carte */
+.card-img-top {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* Contenu de la carte */
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+/* Style for the "Show Selected Items" button */
+.mt-3 .btn-primary {
+  background-color: #007bff; /* Primary blue color */
+  color: #ffffff; /* White text */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Match the card's border-radius */
+  padding: 8px 16px; /* Reduced padding to match the previous size */
+  font-size: 14px; /* Smaller font size to match the previous button */
+  font-family: 'Arial', sans-serif; /* Match the font */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow like the cards */
+  transition: background-color 0.2s ease, transform 0.2s ease; /* Smooth hover effects */
+  line-height: 1; /* Prevent extra height from line spacing */
+  display: inline-block; /* Ensure the button doesn't stretch */
+}
+
+.mt-3 .btn-primary:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.02); /* Slight scale effect like the cards */
+}
+
+.mt-3 .btn-primary:disabled {
+  background-color: #cccccc; /* Gray background when disabled */
+  cursor: not-allowed; /* Indicate it's not clickable */
+  box-shadow: none; /* Remove shadow when disabled */
+}
+
+/* Override button size to match the previous screenshot */
+.mt-3 .btn-primary {
+  padding: 6px 12px !important; /* Further reduce padding to make the button more compact */
+  font-size: 13px !important; /* Slightly smaller font size to fit the compact look */
+  min-width: 150px; /* Set a fixed width to match the previous button's width */
+  height: 32px; /* Set a fixed height to match the previous button's height */
+  line-height: 1; /* Ensure no extra vertical spacing */
+  display: inline-block; /* Prevent stretching */
+}
+
+
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .container.mt-4 {
+    margin-left: 250px;
+    padding: 30px;
+  }
+  
+  .row.g-4 .card {
+    max-width: 100%;
+  }
+}

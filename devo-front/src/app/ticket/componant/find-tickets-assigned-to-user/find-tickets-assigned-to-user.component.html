@@ -1,0 +1,91 @@
+<app-sidebar></app-sidebar>
+<form class="d-flex gap-2 align-items-center" role="search">
+  <input class="form-control" type="search" placeholder="Find a book" aria-label="Search">
+  <div class="dropdown cursor-pointer" (click)="unreadNotificationsSubscription = 0">
+   <i class="fas fa-bell position-relative h5" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+      <span class="visually-hidden">
+        {{notificationss.length}}
+    </span>
+  </span>
+   </i>
+   <ul class="dropdown-menu">
+    <li *ngFor="let notification of notificationss">
+    <span class="dropdown-item cursor-pointer border-bottom">
+      <i class="fas fa-bell">
+
+      </i>&nbsp; {{notification.content}} :{{notification.notificationStatus}}
+       </span>
+
+    </li>
+   </ul>
+  </div>
+  <img src="logo-devoteam.webp" alt="Devoteam Logo" width="100">
+</form>
+
+<div class="ticket-container">
+ 
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="tickets.length === 0" class="no-tickets">
+    Aucun ticket trouvé pour cet utilisateur.
+  </div>
+
+  <div *ngIf="tickets.length > 0" class="ticket-list">
+    <div 
+      *ngFor="let ticket of tickets" 
+      class="ticket-card" 
+      (click)="selectTicket(ticket)"
+    >
+      <h3>{{ ticket.title }}</h3>
+      <p><strong>Description:</strong> {{ ticket.description }}</p>
+      <p><strong>Category:</strong> {{ ticket.categoryType }}</p>
+      <p><strong>Status:</strong> {{ ticket.statusType }}</p>
+      <p><strong>Priority:</strong> {{ ticket.priorityType }}</p>
+      <button 
+      class="edit-btn" 
+      *ngIf="ticket.statusType !== 'COMPLETED' && !ticket.accepted" 
+      (click)="assignTicketsToUser(ticket.ticketid, ticket)"
+    >
+      Accept
+    </button>
+    <button 
+      class="edit-btn" 
+      *ngIf="ticket.accepted && ticket.statusType !== 'COMPLETED'" 
+      (click)="completeTicket(ticket.ticketid, ticket)"
+    >
+      Complete
+    </button>
+    <button 
+    class="edit-btn" 
+    *ngIf="ticket.statusType === 'COMPLETED'" 
+    [disabled]="true"
+  >
+    Closed
+  </button>
+  </div>
+</div>
+<!-- Affichage du ticket sélectionné avec Feedback et Demande d'achat -->
+<div *ngIf="selectedTicket" class="modal-overlay">
+  <div class="modal-content">
+    <h4>{{ selectedTicket.title }}</h4>
+    <p><strong>Description:</strong> {{ selectedTicket.description }}</p>
+    <p><strong>Category:</strong> {{ selectedTicket.categoryType }}</p>
+    <p><strong>Status:</strong> {{ selectedTicket.statusType }}</p>
+    <p><strong>Priority:</strong> {{ selectedTicket.priorityType }}</p>
+    <button 
+    class="purchase-btn" 
+    (click)="requestPurchase()" 
+    [disabled]="selectedTicket.categoryType !== 'Technical'"
+  >
+    Request Purchase
+  </button>
+    <button class="accept-btn" (click)="assignTicketsToUser(selectedTicket.ticketid, selectedTicket)" [disabled]="selectedTicket.accepted">
+      {{ selectedTicket.accepted ? 'Closed' : 'Accept' }}
+    </button>
+    <button class="close-btn" (click)="closeTicketDetails()">Close</button>
+  </div>
+</div>

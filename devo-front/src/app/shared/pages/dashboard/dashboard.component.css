@@ -1,0 +1,188 @@
+/* Style général pour la colonne principale */
+.col-12.col-xl-8 {
+    padding: 0 15px;
+    margin-bottom: 40px; /* Augmenté */
+        border: none;
+    border-radius: 12px; /* Arrondis plus prononcés */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); /* Ombre plus forte */
+    overflow: hidden;
+    margin-bottom: 40px; /* Espacement accru */
+    background-color: #ffffff;
+    min-height: 500px; /* Hauteur minimale augmentée */
+    border: 1px solid rgba(0,0,0,0.05); /* Bordure subtile */
+    transition: all 0.3s ease; /* Animation fluide */
+}
+
+/* Style de la carte principale - Version Max Weight */
+
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); /* Effet 3D au survol */
+}
+
+/* En-tête de la carte plus épais */
+.card-header {
+    background-color: #f8f9fa; /* Fond légèrement grisé */
+    border-bottom: 2px solid #e0e0e0; /* Bordure plus épaisse */
+    padding: 25px 30px; /* Padding augmenté */
+}
+
+.card-header h4 {
+    font-size: 1.5rem; /* Taille de police augmentée */
+    font-weight: 700; /* Gras plus prononcé */
+    color: #2c3e50; /* Couleur plus foncée */
+    margin: 0;
+    letter-spacing: 0.5px; /* Espacement des lettres */
+}
+
+/* Contenu de la carte plus spacieux */
+.card-body {
+    padding: 30px; /* Plus d'espace interne */
+    background-color: #ffffff;
+}
+
+/* Bouton de téléchargement plus imposant */
+.download-btn {
+    background-color: #4e73df;
+    color: white;
+    border: none;
+    padding: 12px 25px; /* Taille augmentée */
+    border-radius: 8px; /* Arrondis plus prononcés */
+    font-weight: 600; /* Plus gras */
+    font-size: 1rem; /* Taille de police augmentée */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 30px; /* Espacement accru */
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(78, 115, 223, 0.3); /* Ombre ajoutée */
+}
+
+.download-btn:hover {
+    background-color: #3a5ec0;
+    transform: translateY(-3px); /* Effet plus prononcé */
+    box-shadow: 0 6px 20px rgba(78, 115, 223, 0.4); /* Ombre plus forte */
+}
+
+/* Styles pour les graphiques plus grands */
+h2 {
+    font-size: 1.3rem; /* Taille augmentée */
+    font-weight: 700; /* Plus gras */
+    color: #34495e; /* Couleur plus foncée */
+    margin: 25px 0 20px 0; /* Espacement accru */
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0; /* Séparation visuelle */
+}
+
+canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important; /* Hauteur à 100% */
+    margin: 0 auto;
+}
+
+/* Conteneur des graphiques agrandi */
+.chart-container {
+    position: relative;
+    margin: 0 auto;
+    height: 400px; /* Hauteur augmentée */
+    width: 100%;
+    background-color: #fdfdfd;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #eee;
+}
+
+/* Style pour le PDF Viewer plus grand */
+pdf-viewer {
+    display: block;
+    width: 100%;
+    min-height: 700px; /* Hauteur augmentée */
+    border: 2px solid #eaeaea; /* Bordure plus épaisse */
+    border-radius: 10px; /* Arrondis plus prononcés */
+    margin-top: 25px; /* Espacement accru */
+    background-color: #f9f9f9;
+}
+
+/* Styles pour la colonne latérale */
+.col-12.col-lg-3 {
+    padding: 0 15px;
+}
+
+/* Carte de profil plus épaisse */
+.avatar img {
+    width: 60px; /* Taille augmentée */
+    height: 60px; /* Taille augmentée */
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff; /* Bordure ajoutée */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Ombre ajoutée */
+}
+
+.name h5 {
+    font-size: 1.2rem; /* Taille augmentée */
+    margin-bottom: 5px; /* Espacement accru */
+    font-weight: 700; /* Plus gras */
+}
+
+.name h6 {
+    font-size: 0.9rem; /* Taille légèrement augmentée */
+    color: #7f8c8d; /* Couleur plus douce */
+}
+
+/* Messages récents plus spacieux */
+.recent-message {
+    border-bottom: 2px solid #f5f5f5; /* Bordure plus épaisse */
+    transition: all 0.3s ease;
+    padding: 15px 0; /* Espacement accru */
+}
+
+.recent-message:hover {
+    background-color: #f9f9f9;
+    transform: translateX(5px); /* Effet de déplacement */
+}
+
+.recent-message h6 {
+    font-size: 0.9rem; /* Taille légèrement augmentée */
+    line-height: 1.6; /* Interligne accru */
+    margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .col-12.col-xl-8, 
+    .col-12.col-lg-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    pdf-viewer {
+        height: 600px; /* Hauteur adaptée */
+    }
+    
+    .card {
+        min-height: auto; /* Hauteur automatique */
+    }
+}
+
+@media (max-width: 768px) {
+    .card-header h4 {
+        font-size: 1.3rem; /* Taille conservée */
+    }
+    
+    .download-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 15px 25px; /* Taille augmentée */
+    }
+    
+    pdf-viewer {
+        height: 400px; /* Hauteur adaptée */
+        min-height: 400px;
+    }
+    
+    .chart-container {
+        height: 300px; /* Hauteur adaptée */
+    }
+}

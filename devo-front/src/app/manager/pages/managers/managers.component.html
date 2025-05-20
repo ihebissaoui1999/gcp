@@ -1,0 +1,62 @@
+<app-sidebar></app-sidebar>
+
+<!-- Barre de recherche + notifications -->
+<form class="d-flex gap-2 align-items-center p-3" role="search">
+  <input class="form-control" type="search" placeholder="Rechercher un paiement" aria-label="Search">
+  
+  <div class="dropdown cursor-pointer">
+    <i class="fas fa-bell position-relative h5" data-bs-toggle="dropdown" aria-expanded="false">
+      <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+        <span class="visually-hidden">
+          {{notificationss?.length || 0}}
+        </span>
+      </span>
+    </i>
+    <ul class="dropdown-menu">
+      <li *ngFor="let notification of notificationss">
+        <span class="dropdown-item cursor-pointer border-bottom">
+          <i class="fas fa-bell"></i>&nbsp; 
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <img src="logo-devoteam.webp" alt="Devoteam Logo" width="100">
+</form>
+
+<!-- Section principale -->
+<div class="payment-container p-4">
+  <h2>Liste des paiements</h2>
+
+  <div *ngIf="payment.length === 0" class="text-muted">Aucun paiement disponible.</div>
+
+  <div class="payment-list row row-cols-1 row-cols-md-2 g-4 mt-3">
+    <div *ngFor="let payment of payment" class="col">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Paiement #{{ payment.paymentid }}</h5>
+          <p><strong>Date :</strong> {{ payment.paymentdate }}</p>
+          <p><strong>Montant :</strong> {{ payment.paymentamount }} DT</p>
+          <p><strong>Description :</strong> {{ payment.description }}</p>
+          <p>
+            <strong>Vérifié :</strong>
+            <span [ngClass]="payment.verified ? 'text-success fw-bold' : 'text-warning'">
+              {{ payment.verified ? 'Oui' : 'Non' }}
+            </span>
+          </p>
+          <button
+          class="btn w-100"
+          [ngClass]="payment.verified ? 'btn-success' : 'btn-primary'"
+          [disabled]="payment.verified"
+          (click)="verifyPayment(payment.paymentid)" 
+        >
+          {{ payment.verified ? 'Vérifié' : 'Vérifier' }}
+        </button>
+        
+        
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,201 @@
+<div>
+    <script src="assets/static/js/initTheme.js"></script>
+
+    <div id="app">
+        <app-sidebar></app-sidebar>
+        <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+
+
+            <div class="page-heading">
+                <h3>Profile Statistics</h3>
+            </div>
+            <div class="page-content">
+                <section class="row">
+                    <div class="col-12 col-lg-9">
+                        <div class="row">
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-4 py-4-5">
+                                        <div class="row">
+                                            <div
+                                                class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                                <div class="stats-icon purple mb-2">
+                                                    <i class="iconly-boldShow"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                                <h6 class="text-muted font-semibold">Profile Views</h6>
+                                                <h6 class="font-extrabold mb-0">112.000</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-4 py-4-5">
+                                        <div class="row">
+                                            <div
+                                                class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                                <div class="stats-icon blue mb-2">
+                                                    <i class="iconly-boldProfile"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                                <h6 class="text-muted font-semibold">Followers</h6>
+                                                <h6 class="font-extrabold mb-0">183.000</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-4 py-4-5">
+                                        <div class="row">
+                                            <div
+                                                class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                                <div class="stats-icon green mb-2">
+                                                    <i class="iconly-boldAdd-User"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                                <h6 class="text-muted font-semibold">Following</h6>
+                                                <h6 class="font-extrabold mb-0">80.000</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-4 py-4-5">
+                                        <div class="row">
+                                            <div
+                                                class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                                <div class="stats-icon red mb-2">
+                                                    <i class="iconly-boldBookmark"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                                <h6 class="text-muted font-semibold">Saved Post</h6>
+                                                <h6 class="font-extrabold mb-0">112</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Devoteam Tunisie est une entreprise spécialisée dans le domaine des services numériques depuis plus de 20 vingt ans. Nous appartenons à un Groupe international reconnu sur le marché du conseil et de l’intégration des Services IT.</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="chart-profile-visit"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-12 col-xl-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4>Latest Comments</h4>
+                                    </div>
+                                            <!-- <button (click)="downloadTickets()" class="download-btn">Download Tickets (CSV)</button>-->
+    <button (click)="downloadTickets()" class="download-btn">Download Tickets (CSV)</button>
+
+    <!-- Graphique en Barres -->
+    <h2>Tickets by Acceptance Status</h2>
+    <div style="max-width: 600px;">
+      <canvas baseChart
+              [data]="barChartData"
+              [options]="barChartOptions"
+              [type]="barChartType"></canvas>
+    </div>
+
+    <!-- Graphique en Secteurs -->
+   
+
+ 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        <div class="card">
+                            <div class="card-body py-4 px-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-xl">
+                                        <img src="1.jpg" alt="Face 1">
+                                    </div>
+                                    <div class="ms-3 name">
+                                        <h5 class="font-bold">{{fullName}}</h5>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+  <div class="card-header">
+    <h4>Recent Messages</h4>
+  </div>
+  <div class="card-content pb-4">
+    <div *ngFor="let message of chatMessages" class="recent-message d-flex px-4 py-3">
+
+      <div class="name ms-4">
+ 
+        <h6 class="text-muted mb-0">{{ message.content }}</h6>
+      </div>
+    </div>
+  
+
+
+                                <div class="px-4">
+                                    <button class='btn btn-block btn-xl btn-outline-primary font-bold mt-3'>Start
+                                        Conversation</button>
+                                </div>
+                            </div>
+                        </div>
+            
+                          <div class="col-12 col-md-6 col-xl-4">
+
+  
+      <div class="chart-container" style="width: 500%; max-width: 300%; height: auto;">
+        <canvas baseChart
+                [data]="userTicketChartData"
+                [options]="userTicketChartOptions"
+                [type]="'bar'">
+        </canvas>
+      </div>
+    </div>
+  </div>
+ 
+            
+              
+                </section>
+            </div>
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2025 &copy; Devoteam</p>
+                    </div>
+                    <div class="float-end">
+                        <p>Devoteam <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></span></p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</div>
+

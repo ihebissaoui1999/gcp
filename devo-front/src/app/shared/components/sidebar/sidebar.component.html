@@ -1,0 +1,91 @@
+<div id="sidebar">
+    <div class="sidebar-wrapper active">
+        <div class="sidebar-header position-relative">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="logo">
+                    <a href="/dashboard"><img src="logo-devoteam.webp" alt="Logo" srcset=""></a>
+                </div>
+
+            </div>
+        </div>
+        <!-- SIDEBAR  -->
+        <div class="sidebar-menu">
+            <ul class="menu">
+                <li class="sidebar-title">Menu</li>
+
+                <li class="sidebar-item" routerLinkActive="active" >
+                    <a routerLink="/dashboard" class='sidebar-link'>
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Dashboard</span>
+                    </a>
+
+
+                </li>
+                <li class="sidebar-item" routerLinkActive="active" *ngIf="isManager">
+                    <a routerLink="/managers" class="sidebar-link">
+                      <i class="bi bi-person-gear"></i>
+                      <span>Managers</span>
+                    </a>
+                  </li>
+                  
+                      
+
+                
+                <li class="sidebar-item" routerLinkActive="active">
+                    <a routerLink="/MaTirial" class='sidebar-link'>
+                        <i class="bi bi-person-gear"></i>
+                        <span>Matirial</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-item" routerLinkActive="active">
+                    <a routerLink="/chats" class='sidebar-link'>
+                        <i class="bi bi-person-gear"></i>
+                        <span>Chat devoteam</span>
+                    </a>
+
+                </li>
+
+                <li class="sidebar-item" routerLinkActive="active" *ngIf="isTechnical">
+                    <a routerLink="/stock" class='sidebar-link'>
+                        <i class="bi bi-receipt-cutoff"></i>
+                        <span>Stock</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-item" routerLinkActive="active">
+                    <a routerLink="/ticket" class='sidebar-link'>
+                        <i class="bi bi-receipt-cutoff"></i>
+                        <span>Ticket</span>
+                    </a>
+
+                </li>
+                
+                <li class="sidebar-item" routerLinkActive="active">
+                    <a routerLink="/ticketrecived" class='sidebar-link'>
+                        <i class="bi bi-people"></i>
+                        <span>Ticket Recived</span>
+                    </a>
+
+                </li>
+
+                <li class="sidebar-item" routerLinkActive="active">
+                    <a routerLink="/consultants" class='sidebar-link'>
+                        <i class="bi bi-people"></i>
+                        <span>Consultants</span>
+                    </a>
+
+                </li>
+
+                <li class="sidebar-item cursor-pointer" (click)="logout()">
+                    <i class="fa-solid fa-door-open"></i>
+                    <span>Déconnexion</span>
+                </li>
+                
+
+
+            </ul>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+<app-sidebar></app-sidebar>
+<form class="d-flex gap-2 align-items-center" role="search">
+  <input class="form-control" type="search" placeholder="Find a book" aria-label="Search">
+  <div class="dropdown cursor-pointer" (click)="unreadNotificationsSubscription = 0">
+   <i class="fas fa-bell position-relative h5" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+      <span class="visually-hidden">
+        New alerts
+    </span>
+  </span>
+   </i>
+   <ul class="dropdown-menu">
+    <li *ngFor="let notification of notificationss">
+    <span class="dropdown-item cursor-pointer border-bottom">
+      <i class="fas fa-bell">
+
+      </i>&nbsp; {{notification.content}} :{{notification.notificationStatus}}
+       </span>
+
+    </li>
+   </ul>
+  </div>
+  <img src="logo-devoteam.webp" alt="Devoteam Logo" width="100">
+</form>
+<div class="ticket-container">
+    <div class="left-section">
+      <div class="ticket-form">
+        <h2>Add a Stock</h2>
+  
+        <form (ngSubmit)="onSubmit()" #stockForm="ngForm">
+          <!-- Nom du stock -->
+          <label for="stockename">Stock Name :</label>
+          <input
+            id="stockename"
+            type="text"
+            name="stockename"
+            [(ngModel)]="stock.stockename"
+            required
+          />
+  
+          <!-- Description -->
+          <label for="stockdescription">Description :</label>
+          <textarea
+            id="stockdescription"
+            name="stockdescription"
+            [(ngModel)]="stock.stockdescription"
+            required
+          ></textarea>
+  
+          <!-- Type de stock -->
+          <label for="stockType">-- Select a Type -- :</label>
+          <select
+            id="stockType"
+            name="stockType"
+            [(ngModel)]="stock.stockType"
+            required
+          >
+            <option value="">-- Select a Type --</option>
+            <option value="ENSTOCK">IN STOCK</option>
+            <option value="ENPANNE">OUT OF ORDER</option>
+            <option value="CLEAR">CLEAR</option>
+          </select>
+  
+          <!-- Catégorie -->
+          <label for="stockMatiriel">Category :</label>
+          <select
+            id="stockMatiriel"
+            name="stockMatiriel"
+            [(ngModel)]="stock.stockMatiriel"
+            required
+          >
+            <option value="">-- Select a Category  --</option>
+            <option value="ITEquipment">Computer Equipment</option>
+            <option value="Accessories">Accessories</option>
+            <option value="CommunicationEquipment">Furniture</option>
+          </select>
+  
+          <!-- Image -->
+          <label for="image">Image :</label>
+          <input
+            type="file"
+            id="image"
+            (change)="onFileSelected($event)"
+            required
+          />
+  
+          <!-- Erreur -->
+          <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  
+          <button type="submit">Add Stock</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  

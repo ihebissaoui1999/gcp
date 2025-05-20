@@ -1,0 +1,27 @@
+<app-sidebar></app-sidebar>
+
+<div class="ticket-container">
+  <h2> Ticket</h2>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="tickets.length === 0" class="no-tickets">
+    Aucun ticket trouvé pour cet utilisateur.
+  </div>
+
+  <div *ngIf="tickets.length > 0" class="ticket-list">
+    <div *ngFor="let ticket of tickets" class="ticket-card">
+      <h3>{{ ticket.title }}</h3>
+      <p><strong>Description:</strong> {{ ticket.description }}</p>
+      <p><strong>Category:</strong> {{ ticket.categoryType }}</p>
+      <p><strong>Status:</strong> {{ ticket.statusType }}</p>
+      <p><strong>Category:</strong> {{ ticket.priorityType }}</p>
+      <p><strong>Create By:</strong> {{ ticket.createdBy }}</p>
+    </div>
+  </div>
+  <full-calendar [options]="calendarOptions"></full-calendar>
+</div>
+  <!-- FullCalendar -->
+

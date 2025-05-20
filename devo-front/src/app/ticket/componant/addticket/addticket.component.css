@@ -1,0 +1,219 @@
+.ticket-form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    color: #444;
+  }
+  
+  input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  textarea {
+    resize: none;
+    height: 80px;
+  }
+  
+  button {
+    width: 100%;
+    background-color: #ff3b3b; 
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+  
+  button:hover {
+    background-color: #e02e2e; /* Un rouge plus foncé au hover */
+  }
+  
+  .error {
+    color: red;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  .ticket-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 30px;
+  }
+  
+  .left-section {
+    width: 90%;
+  }
+  
+  .right-section {
+    width: 20%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .full-calendar-container {
+    margin: 0 auto;
+    max-width: 800px;  /* Limite la largeur du calendrier */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Style du FullCalendar */
+  .fc {
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    max-width: 100%;
+  }
+  
+  /* Barre d'outils du calendrier (navigation) */
+  .fc-toolbar {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Titre du mois */
+  .fc-toolbar-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #e02e2e;
+  }
+  
+  /* Styles des boutons de navigation (précédent, suivant) */
+  .fc-prev-button, .fc-next-button {
+    background-color: #ff00aa;
+    border-radius: 50%;
+    padding: 10px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .fc-prev-button:hover, .fc-next-button:hover {
+    background-color: #e02e2e;
+  }
+  
+  /* Bouton principal (enregistrer, ajouter événement, etc.) */
+  .fc-button-primary {
+    background-color: #ff00aa;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .fc-button-primary:hover {
+    background-color: #e02e2e;
+  }
+  
+  /* Jours de la semaine (lundi, mardi, etc.) */
+  .fc-daygrid-day-top {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    transition: background-color 0.3s ease;
+    color: #e02e2e; /* Rouge */
+    font-weight: bold;
+}
+  .fc-daygrid-day-top:hover {
+    background-color: #e0f7fa;
+  }
+  
+  .fc-daygrid-day-number {
+    font-weight: bold;
+    color: #e02e2e !important; /* Rouge */
+    font-size: 16px;
+}
+  
+  /* Événements dans les jours */
+  .fc-event {
+    background-color: #ff00aa;
+    color: white;
+    border-radius: 5px;
+    padding: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .fc-event:hover {
+    background-color: #e02e2e;
+    transform: translateY(-2px);
+  }
+  
+  .fc-event-title {
+    font-weight: bold;
+    font-size: 12px;
+  }
+  
+  .fc-event-time {
+    font-size: 10px;
+    opacity: 0.8;
+  }
+  
+  /* Détails des événements */
+  .fc-daygrid-day-events {
+    font-size: 0.9em;
+    color: #333;
+    padding: 5px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+  }
+  
+  /* Styles de la grille des jours */
+  .fc-daygrid-background {
+    background-color: #fafafa;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .fc-daygrid {
+    border-radius: 12px;
+    border: 2px solid #ddd;
+  }
+  
+  /* Survol des jours */
+  .fc-daygrid-day-top:hover {
+    background-color: #e0f7fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #e02e2e !important;
+}

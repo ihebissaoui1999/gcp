@@ -1,0 +1,42 @@
+<app-sidebar></app-sidebar>
+<div class="main" [class.loading]="isLoading">
+    @if (isLoading) {
+      <app-spinner></app-spinner>
+    }
+<form class="d-flex gap-2 align-items-center" role="search">
+    <input class="form-control" type="search" placeholder="Find a book" aria-label="Search">
+    <div class="dropdown cursor-pointer" (click)="unreadNotificationsSubscription = 0">
+     <i class="fas fa-bell position-relative h5" data-bs-toggle="dropdown" aria-expanded="false">
+      <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+        <span class="visually-hidden">
+          New alerts
+      </span>
+    </span>
+     </i>
+     <ul class="dropdown-menu">
+      <li *ngFor="let notification of notificationss">
+      <span class="dropdown-item cursor-pointer border-bottom">
+        <i class="fas fa-bell">
+  
+        </i>&nbsp; 
+         </span>
+  
+      </li>
+     </ul>
+    </div>
+    <img src="logo-devoteam.webp" alt="Devoteam Logo" width="100">
+  </form>
+  <div class="Purchase-container">
+    <div class="left-section">
+      <!-- Formulaire d'ajout de ticket -->
+      <div class="Purchase-form">
+        <h2>Ajouter un Purchase</h2>
+        <form (ngSubmit)="createPurchaseRequest()">
+
+          <label for="description">Description :</label>
+          <textarea id="description" [(ngModel)]="purchaseRequest.description" name="description" required></textarea>
+    
+          <button type="submit">Ajouter</button>
+        </form>
+        <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+      </div>

@@ -88,7 +88,7 @@ export class UserService extends BaseService {
     });
   }
   getUsers(): Observable<UserResponse[]> {
-    return this.http.get<UserResponse[]>('http://backend.backend.svc.cluster.local:8081/api/v1/users');
+    return this.http.get<UserResponse[]>('/api/v1/users');
   }
 
 }

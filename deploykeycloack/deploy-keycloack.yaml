@@ -18,7 +18,7 @@ spec:
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.1.1
-          args: ["start-dev", "--http-relative-path=/auth"]
+          args: ["start-dev"]
           env:
             - name: KEYCLOAK_ADMIN
               value: admin
@@ -32,6 +32,9 @@ spec:
               value: "true"
             - name: KC_HTTPS_ENABLED
               value: "false"
+            - name: KEYCLOAK_FRONTEND_URL
+              value: http://35.229.216.62:8080/
+             
             - name: KC_DB
               value: postgres
             - name: KC_DB_USERNAME

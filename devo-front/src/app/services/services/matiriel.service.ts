@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Matiriel } from "../models";
@@ -9,13 +9,19 @@ import { Matiriel } from "../models";
 export class MatirielService{
 
 
-    private apiUrl = 'http://backend.backend.svc.cluster.local:8081/api/v1/matiriel';
+    private apiUrl = '/api/v1/matiriel';
 
     constructor(private http :HttpClient){
 
     }
 
     getMatiriel(): Observable<Matiriel[]>  {
+      const token = localStorage.getItem('keycloak-token');
+      console.log('Using token:', token);
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      });
       // Assure-toi que 'responseType' est bien configuré
       return this.http.get<Matiriel[]>(`${this.apiUrl}/get`);
     }

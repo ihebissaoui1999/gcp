@@ -300,7 +300,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
   private initWebSocket() {
     if (this.keycloakService.keycloak.tokenParsed?.sub) {
       console.log('User ID:', this.keycloakService.keycloak.tokenParsed.sub);
-      let ws = new SockJS('http://localhost:8081/ws');
+      let ws = new SockJS('/ws');
       this.socketClient = Stomp.over(ws);
   
       // Souscription au canal '/chat' pour recevoir des messages de chat

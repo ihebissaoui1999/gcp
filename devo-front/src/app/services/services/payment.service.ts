@@ -7,7 +7,7 @@ import { Payment } from "../models/payment";
   providedIn: 'root'
 })
 export class paymentService {
-  private apiUrl = '/api/v1/Payment';
+  private apiUrl = 'http://backend.backend.svc.cluster.local:8081/api/v1/Payment';
 
 
   constructor(private http: HttpClient) {}

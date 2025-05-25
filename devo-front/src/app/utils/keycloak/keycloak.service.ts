@@ -14,7 +14,7 @@ export class KeycloakService {
   get keycloak() {
     if (!this._keycloak && isPlatformBrowser(this.platformId)) {
       this._keycloak = new Keycloak({
-        url: 'http://35.229.216.62:8080/',
+        url: 'https://35.229.216.62:8443/',
         realm: 'devoteam',
         clientId: 'devoteam',
       });
@@ -44,7 +44,7 @@ export class KeycloakService {
         onLoad: 'login-required',
         redirectUri: window.location.origin,
         flow: isSecure ? 'standard' : 'implicit',
-        checkLoginIframe: false
+        //checkLoginIframe: false
       });
 
       if (authenticated) {

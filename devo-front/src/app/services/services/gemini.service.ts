@@ -7,7 +7,7 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class GeminiService {
-  private apiUrl = '/api/v1/gemini/send-message'; // URL de ton backend
+  private apiUrl = 'http://backend.backend.svc.cluster.local:8081/api/v1/gemini/send-message'; // URL de ton backend
 
   constructor(private http: HttpClient) {}
 

@@ -11,7 +11,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ApiConfiguration {
-  rootUrl: string = 'http://backend.backend.svc.cluster.local:8081';
+  rootUrl: string = '/api';
 }
 
 /**

@@ -7,7 +7,7 @@ import { Stock } from "../models/stock";
   providedIn: 'root'
 })
 export class stockService {
-  private apiUrl = 'http://backend.backend.svc.cluster.local:8081/stock';
+  private apiUrl = 'http://backend.backend.svc.cluster.local:8081/api/stock';
 
   constructor(private http: HttpClient) {}
 

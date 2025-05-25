@@ -1,51 +1,71 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import Keycloak from 'keycloak-js';
+
 @Injectable({
   providedIn: 'root'
 })
 export class KeycloakService {
-  private _keycloak : Keycloak | undefined ;
-  constructor() { }
-  get keycloak() {
-    if (!this._keycloak) {
-      this._keycloak = new Keycloak({
-        url: 'http://34.81.202.204:8080/auth',
-        realm: 'devoteam',
-        clientId: 'DEVOTEAM'
-      });
+  private _keycloak: Keycloak | undefined;
+  private initialized = false; 
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  get keycloak() {
+    if (!this._keycloak && isPlatformBrowser(this.platformId)) {
+      this._keycloak = new Keycloak({
+        url: 'https://35.229.216.62:8443/',
+        realm: 'devoteam',
+        clientId: 'devoteam',
+      });
+    }
+    if (!this._keycloak) {
+      throw new Error('Keycloak is not initialized – this may be running on the server.');
     }
     return this._keycloak;
+    
   }
 
   async init() {
-    const authenticated = await this.keycloak.init({
-      onLoad: 'login-required',
+    if (this.initialized) {
+      // Already initialized, do nothing
+      return;
+    }
 
-    });
-    if (authenticated) {
-      localStorage.setItem('keycloak-token', this.keycloak.token || '');
-      const tokenParsed: any = this.keycloak.tokenParsed;
-      if (tokenParsed && tokenParsed.sub) {
-        localStorage.setItem('userId', tokenParsed.sub);
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    this.initialized = true;
+
+    const isSecure = window.location.protocol === 'https:' || window.location.hostname === 'localhost';
+
+    try {
+      const authenticated = await this.keycloak.init({
+        onLoad: 'login-required',
+        redirectUri: window.location.origin,
+        flow: isSecure ? 'standard' : 'implicit',
+        //checkLoginIframe: false
+      });
+
+      if (authenticated) {
+        localStorage.setItem('keycloak-token', this.keycloak.token || '');
+        const tokenParsed: any = this.keycloak.tokenParsed;
+        if (tokenParsed?.sub) {
+          localStorage.setItem('userId', tokenParsed.sub);
+        }
+
+        const roles: string[] = tokenParsed.realm_access?.roles || [];
+        const filteredRoles = roles.filter(role => !['offline_access', 'uma_authorization', 'default-roles-bnns'].includes(role));
+        if (filteredRoles.length) {
+          localStorage.setItem('userRoles', JSON.stringify(filteredRoles));
+        }
+
+        setInterval(() => this.refreshToken(30), 60000);
       }
-      const roles: string[] = tokenParsed.realm_access?.roles || []; // Déclare le type de roles comme tableau de chaînes
-      // Filtrer les rôles pour exclure 'offline_access', 'uma_authorization' et 'default-roles-bnns'
-      const filteredRoles = roles.filter((role: string) => !['offline_access', 'uma_authorization', 'default-roles-bnns'].includes(role));
-
-      // Si un rôle est trouvé (comme 'Manager'), le stocker dans le localStorage
-      if (filteredRoles.length) {
-        localStorage.setItem('userRoles', JSON.stringify(filteredRoles)); // Stocke uniquement le premier rôle trouvé, sans crochets ni guillemets
-      }
-
-
-
-      setInterval(() => {
-        this.refreshToken(30);
-      },60000);
+    } catch (error) {
+      console.error('Keycloak init failed', error);
     }
   }
-
 async refreshToken(minValidity = 30): Promise<boolean> {
   if (!this.keycloak) return false;
   try {
@@ -81,7 +101,7 @@ async refreshToken(minValidity = 30): Promise<boolean> {
   }
 
   logout() {
-    return this.keycloak.logout({redirectUri: 'http://35.201.225.147:80'});
+    return this.keycloak.logout({redirectUri: window.location.origin});
   }
 
   accountManagement() {

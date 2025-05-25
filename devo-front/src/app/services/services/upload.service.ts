@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class UploadService {
 
-    private uploadUrl = 'http://backend.backend.svc.cluster.local:8081/cloud/upload';
+    private uploadUrl = 'http://backend.backend.svc.cluster.local:8081/api/cloud/upload';
 
     constructor(private http: HttpClient) { }
 

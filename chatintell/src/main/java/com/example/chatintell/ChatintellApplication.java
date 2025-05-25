@@ -24,8 +24,8 @@ import org.springframework.web.reactive.function.client.WebClient;
         in = SecuritySchemeIn.HEADER,
         flows = @OAuthFlows(
                 password = @OAuthFlow(
-                        authorizationUrl = "http://localhost:8080/realms/bnns/protocol/openid-connect/auth",
-                        tokenUrl = "http://localhost:8080/realms/bnns/protocol/openid-connect/token"
+                        authorizationUrl = "http://35.229.216.62:8080/realms/devoteam/protocol/openid-connect/auth",
+                        tokenUrl = "http://35.229.216.62:8080/realms/devoteam/protocol/openid-connect/token"
                 )
         )
 )

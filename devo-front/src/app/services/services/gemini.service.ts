@@ -7,12 +7,13 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class GeminiService {
-  private apiUrl = 'http://35.201.225.147/api/v1/gemini/send-message'; // URL de ton backend
+  private apiUrl = 'http://backend.backend.svc.cluster.local:8081/api/v1/gemini/send-message'; // URL de ton backend
 
   constructor(private http: HttpClient) {}
 
   getResponse(message: string): Observable<any> {
     const token = localStorage.getItem('keycloak-token');
+    console.log('Using token:', token);
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'

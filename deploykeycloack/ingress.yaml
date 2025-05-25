@@ -1,19 +1,3 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: keycloak-ingress
-  namespace: keycloak
-  annotations:
-   nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-    - host: keycloak.devoteam.tn
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: keycloak
-                port:
-                  number: 8080
+create secret for tls keycloak i alreday create certs within folder devo-front keyclaok.crt keycloak.key
+k create secret tls keycloak-tls --cert=keycloak.crt --key=keycloak.key -n keycloak
+change to file this cmd (n'oublie pas)

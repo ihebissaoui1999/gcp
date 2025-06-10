@@ -1,0 +1,115 @@
+Un système de ticketing est une solution logicielle permettant de suivre, gérer et résoudre 
+des demandes ou incidents sous forme de tickets. 
+❖  Gestion des utilisateurs 
+Authentification des utilisateurs (connexion/déconnexion) 
+Gestion des rôles (Admin, Agent de support, hr , employé) 
+Gestion des profils  
+ 
+❖ Problème : Mauvaise organisation des demandes 
+• Solution : Gestion des tickets : 
+Création et suivi des tickets en temps réel 
+Attribution automatique ou manuelle aux agents  
+Classification des tickets par priorité et catégorie 
+Suivi et mise à jour des statuts (Changement du statut du ticket, Ajout de 
+commentaires pour un meilleur suivi de la résolution) 
+Ticket : si un ticket qui dépasse 3 jours , automatiquement il va envoyer un mail a 
+l'utilisateur cible 
+ 
+�
+� Exemple de Ticket dans le Système 
+     Numéro du ticket : #TCK-20250214-002 
+�
+� Catégorie : Problème matériel informatique 
+     Demandeur : iheb issaoui  
+             Date de création : 14/02/2025 
+    Statut : En cours de traitement 
+                        Responsable assigné :  role  (Service Informatique) -------->pr 
+�
+� Description de la demande 
+"Mon écran ne s’allume plus depuis ce matin. J’ai essayé de le redémarrer et de vérifier 
+les branchements, mais rien ne fonctionne. J’ai besoin d’une intervention rapide, car je 
+ne peux pas travailler sans écran." 
+Pièces jointes : 
+Photo de l’écran éteint 
+Capture d’écran du message d’erreur affiché 
+❖ Problème : Temps de réponse trop long  
+• Solution : Notifications et alertes 
+Envoi de notifications aux agents dès qu’un ticket leur est assigné 
+Rappels pour les tickets en attente ou en retard  
+Mise en place d’un système d'escalade pour les tickets 
+❖  Problème : Difficulté à analyser les performances 
+• Solution : Tableau de bord et reporting : 
+Graphiques et Statistiques sur le nombre de tickets traités 
+❖ Problème de Prise en Charge Financière et Hébergement 
+• Solutions pour la Prise en Charge Financière et l’Hébergement : 
+Exemple de Ticket  
+Référence du ticket : TCK-20250214-001 
+Catégorie : Prise en charge financière & Hébergement 
+Statut : En cours 
+Priorité : Élevée 
+Créé par : Akrem grayaa  (Employé) 
+Assigné à : Service Financier 
+Description du problème 
+Bonjour, 
+du 
+Je souhaite obtenir une prise en charge financière pour mon déplacement professionnel à 
+Paris 
+20 
+au 
+25 
+mars 
+2025. 
+J’ai besoin d’un hébergement dans un hôtel à proximité de notre bureau et d’un 
+remboursement 
+des 
+frais 
+de 
+Merci de me fournir les documents nécessaires et de valider la prise en charge. 
+transport. 
+2  
+Actions possibles 
+− --------> 
+− Valider la prise en charge 
+− Demander des informations complémentaires 
+− Refuser 
+la 
+❖ Problème  
+demande 
+avec 
+justification 
+L’utilisateur envoie des messages dans le système de messagerie interne pour demander des 
+clarifications ou poser des questions supplémentaires, mais il ne reçoit pas de réponse. Le 
+ticket reste sans évolution et l'utilisateur doit souvent relancer sans savoir où en est sa 
+demande : 
+• Solution : Assurer une réponse rapide des responsables via un système de messagerie 
+en temps réel 
+. Gamification pour motiver les agents 
+Problème : Les agents peuvent parfois se sentir démotivés  par le volume élevé de tickets. 
+Solution : 
+• Système de points et de récompenses : Introduire un système de gamification où les 
+agents gagnent des points pour la résolution de tickets, la gestion de tickets 
+complexes, ou la rapidité de réponse. 
+Système de Feedback sur la Résolution des Tickets 
+Problème : Ne pas savoir si un ticket a été résolu de manière satisfaisante par l'utilisateur. 
+Solution : Système de retour d'information après la clôture du ticket. 
+• Enquête de satisfaction : 
+3  
+o Après la résolution d’un ticket, l’utilisateur peut recevoir un email ou une 
+notification pour lui demander de s'évaluer (par exemple, via une échelle de 1 
+à 5 étoiles et des commentaires). 
+• Analyse des retours : 
+o Les retours peuvent être collectés sous forme de statistiques pour évaluer la 
+qualité du service et l’efficacité des agents 
+. Répartition Dynamique des Tickets par Charge de Travail 
+Problème : Un agent peut être surchargé avec des tickets, ce qui entraîne des délais de 
+traitement 
+plus 
+Solution : Répartition dynamique des tickets en fonction de la charge de travail. 
+• Attribution automatique basée sur la disponibilité : 
+longs. 
+o Le système peut automatiquement attribuer les tickets à des agents en 
+fonction de leur charge de travail actuelle (nombre de tickets ouverts) et de 
+leur expertise. 
+• Rotation des agents : Si un agent atteint un seuil de tickets en attente ou dépasse un 
+certain délai de résolution, le système peut attribuer automatiquement de nouveaux 
+tickets à un autre agent avec moins de charge. 

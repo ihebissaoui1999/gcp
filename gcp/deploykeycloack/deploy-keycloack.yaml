@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: keycloak
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: iheb1999/keycloak
+          args: ["start-dev"]
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: admin
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: admin
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: KC_METRICS_ENABLED
+              value: "true"
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_HTTPS_ENABLED
+              value: "true"
+            - name: KEYCLOAK_FRONTEND_URL
+              value: https://34.81.124.116:8443/
+            - name: KC_HTTPS_CERTIFICATE_FILE
+              value: /etc/x509/https/tls.crt
+            - name: KC_HTTPS_CERTIFICATE_KEY_FILE
+              value: /etc/x509/https/tls.key
+            - name: KC_HTTPS_PORT
+              value: "8443"
+            - name: KC_DB
+              value: postgres
+            - name: KC_DB_USERNAME
+              value: admin
+            - name: KC_DB_PASSWORD
+              value: admin
+            - name: KC_HOSTNAME_STRICT_HTTPS
+              value: "false"
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_DB
+            - name: KC_DB_URL
+              value: jdbc:postgresql://postgres-db/$(POSTGRES_DB)
+          volumeMounts:
+           - name: https-cert
+             mountPath: /etc/x509/https
+             readOnly: true
+
+          ports:
+            - containerPort: 8080
+            - containerPort: 8443
+      volumes:
+        - name: https-cert
+          secret:
+            secretName: keycloak-tls
+

@@ -1,0 +1,11 @@
+# Utilise l'image officielle Keycloak basée sur Quarkus
+FROM quay.io/keycloak/keycloak:26.1.1
+
+# Passer Keycloak en mode 'production' ou 'development'
+ENV KC_HEALTH_ENABLED=true
+ENV KC_METRICS_ENABLED=true
+ENV KEYCLOAK_ADMIN=admin
+ENV KEYCLOAK_ADMIN_PASSWORD=admin
+
+# Commande par défaut
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev"]

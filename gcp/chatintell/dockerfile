@@ -1,0 +1,18 @@
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS builder
+WORKDIR /build
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Étape 2 : Image exécutable avec OpenJDK
+FROM openjdk:17-alpine
+WORKDIR /dev
+USER root
+COPY --from=builder /build/target/chatintell-0.0.1-SNAPSHOT.jar /var/lib/mysql/dev.jar
+COPY keycloak.crt.pem /tmp/keycloak.crt.pem
+RUN keytool -importcert -alias keycloak-selfsigned \
+    -file /tmp/keycloak.crt.pem \
+    -cacerts -storepass changeit -noprompt
+EXPOSE 8081
+ENTRYPOINT ["java", "-jar", "/var/lib/mysql/dev.jar"]
+

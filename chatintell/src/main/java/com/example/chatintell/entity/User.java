@@ -31,7 +31,6 @@ public class User extends BaseAuditingEntity {
     private static final int LAST_ACTIVATE_INTERVAL = 5;
 
     @Id
-
     private String userid;
     private String firstName;
     private String lastName;

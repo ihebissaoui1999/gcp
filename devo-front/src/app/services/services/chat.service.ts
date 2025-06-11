@@ -76,7 +76,7 @@ export class ChatService extends BaseService {
     };
 
     // Ensure that we pass the HttpContext correctly
-    return createChat(this.http, this.rootUrl, params, context, options);
+    return createChat(this.http, this.rootUrl, params, context, options);  
   }
   createChat(params: CreateChat$Params, context?: HttpContext): Observable<any> {
     return this.createChat$Response(params, context).pipe(

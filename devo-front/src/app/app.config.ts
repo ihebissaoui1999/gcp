@@ -7,6 +7,7 @@ import { keycloakHttpInterceptor } from './utils/http/keycloak-http.interceptor'
 import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { PdfViewerModule } from 'ng2-pdf-viewer'; // Ajouté
+import {provideMarkdown} from "ngx-markdown";
 
 export function kcFactory(kcService: KeycloakService) {
   return () => kcService.init();
@@ -14,6 +15,7 @@ export function kcFactory(kcService: KeycloakService) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideMarkdown(),
     provideAnimations(),
     provideToastr(),
     importProvidersFrom(

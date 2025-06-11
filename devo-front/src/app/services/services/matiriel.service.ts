@@ -9,7 +9,7 @@ import { Matiriel } from "../models";
 export class MatirielService{
 
 
-    private apiUrl = 'http://backend.backend.svc.cluster.local:8081/api/v1/matiriel';
+    private apiUrl = '/api/v1/matiriel';
 
     constructor(private http :HttpClient){
 

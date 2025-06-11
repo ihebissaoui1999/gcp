@@ -60,12 +60,12 @@ export class UserService extends BaseService {
   private blobToJson(blob: Blob): Observable<Array<UserResponse>> {
     return new Observable<Array<UserResponse>>((observer) => {
       const reader = new FileReader();
-
+      
       // Handle successful reading of the Blob
       reader.onloadend = () => {
         try {
           const jsonResponse = JSON.parse(reader.result as string);
-
+          
           // Ensure the parsed response is an array
           if (Array.isArray(jsonResponse)) {
             observer.next(jsonResponse);  // Emit the parsed array
@@ -88,7 +88,7 @@ export class UserService extends BaseService {
     });
   }
   getUsers(): Observable<UserResponse[]> {
-    return this.http.get<UserResponse[]>('http://backend.backend.svc.cluster.local:8081/api/v1/users');
+    return this.http.get<UserResponse[]>('http://localhost:8081/api/v1/users');
   }
 
 }

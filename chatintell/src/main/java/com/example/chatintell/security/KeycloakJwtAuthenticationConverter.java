@@ -9,34 +9,44 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toSet;
-
 public class KeycloakJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+
+    private final JwtGrantedAuthoritiesConverter defaultGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+
     @Override
-    public AbstractAuthenticationToken convert(@NonNull Jwt source) {
-        return new JwtAuthenticationToken(
-                source,
-                Stream.concat(
-                                new JwtGrantedAuthoritiesConverter().convert(source).stream(),
-                                extractResourceRoles(source).stream())
-                        .collect(toSet()));
+    public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
+        Collection<GrantedAuthority> authorities = Stream.concat(
+                defaultGrantedAuthoritiesConverter.convert(jwt).stream(),
+                extractResourceRoles(jwt).stream()
+        ).collect(Collectors.toSet());
+
+        return new JwtAuthenticationToken(jwt, authorities);
     }
 
+    @SuppressWarnings("unchecked")
     private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
-        var resourceAccess = new HashMap<>(jwt.getClaim("resource_access"));
+        Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
+        if (resourceAccess == null) {
+            return List.of();
+        }
 
-        var eternal = (Map<String, List<String>>) resourceAccess.get("account");
+        // Change "account" to your actual Keycloak client ID if needed
+        Map<String, Object> clientAccess = (Map<String, Object>) resourceAccess.get("account");
+        if (clientAccess == null) {
+            return List.of();
+        }
 
-        var roles = eternal.get("roles");
+        List<String> roles = (List<String>) clientAccess.get("roles");
+        if (roles == null) {
+            return List.of();
+        }
 
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.replace("-", "_")))
-                .collect(toSet());
+                .collect(Collectors.toSet());
     }
 }

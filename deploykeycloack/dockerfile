@@ -1,0 +1,6 @@
+FROM quay.io/keycloak/keycloak:26.1.1
+# Copy cert to image
+COPY keycloakk.crt /etc/x509/https/keycloakk.crt
+USER root
+# Import cert into JVM truststore
+RUN keytool -importcert -noprompt -trustcacerts -alias keycloak-selfsigned -file /etc/x509/https/keycloakk.crt -keystore /usr/lib/jvm/java-21-openjdk-21.0.6.0.7-1.el9.x86_64/lib/security/cacerts -storepass changeit 

@@ -9,7 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,32 +23,61 @@ public class UserSynchronizer {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
+       final ConcurrentHashMap<String, Instant> lastSync = new ConcurrentHashMap<>();
     public void synchronizeWithIdp(Jwt token) {
+        String userIdFromToken = token.getSubject();
+        Instant now = Instant.now();
+
+        Instant last = lastSync.get(userIdFromToken);
+        if (last != null && last.isAfter(now.minus(Duration.ofMinutes(2)))) {
+            log.debug("Skip sync for user {} (last sync at {})", userIdFromToken, last);
+            return;
+        }
+
         log.info("Synchronizing user with idp");
         getUserEmail(token).ifPresent(userEmail -> {
             log.info("Synchronizing user having email {}", userEmail);
 
-            Optional<User> optUser = userRepository.findByEmail(userEmail);
-            User user = userMapper.fromTokenAttributes(token.getClaims());
-            optUser.ifPresent(value -> user.setUserid(value.getUserid()));
+           // String userIdFromToken = token.getSubject(); // typiquement le sub de Keycloak = uuid
 
-            List<String> roleNames = extractRoles(token);
-            Role role = null;
+            synchronized (this) { // bloque les threads simultanés sur cette méthode
+                Optional<User> optUser = userRepository.findById(userIdFromToken);
 
-            if (!roleNames.isEmpty()) {
-                String roleName = roleNames.get(0); // Prend le premier rôle de la liste
-                role = roleRepository.findByName(roleName)
-                        .orElseGet(() -> {
-                            Role newRole = new Role();
-                            newRole.setName(roleName);
-                            return roleRepository.save(newRole);
-                        });
+                User user = userMapper.fromTokenAttributes(token.getClaims());
+                user.setUserid(userIdFromToken); // forcer le bon ID du token
+
+                if (optUser.isPresent()) {
+                    User existingUser = optUser.get();
+
+                    // on conserve les propriétés non mises à jour par l'IDP si nécessaire
+                    user.setRoles(existingUser.getRoles());
+                    user.setRewards(existingUser.getRewards());
+                    user.setChatsAsSender(existingUser.getChatsAsSender());
+                    user.setChatsAsRecipient(existingUser.getChatsAsRecipient());
+                    user.setTickets(existingUser.getTickets());
+                    user.setMatiriels(existingUser.getMatiriels());
+                    user.setCreatedDate(existingUser.getCreatedDate());
+                }
+
+                List<String> roleNames = extractRoles(token);
+                Role role = null;
+
+                if (!roleNames.isEmpty()) {
+                    String roleName = roleNames.get(0);
+                    role = roleRepository.findByName(roleName)
+                            .orElseGet(() -> {
+                                Role newRole = new Role();
+                                newRole.setName(roleName);
+                                return roleRepository.save(newRole);
+                            });
+                }
+
+                user.setRoles(role);
+                userRepository.save(user);
             }
-
-            user.setRoles(role);
-            userRepository.save(user);
         });
     }
+
 
 
     private Optional<String> getUserEmail(Jwt token) {
@@ -79,4 +111,3 @@ public class UserSynchronizer {
     }
 
 }
-

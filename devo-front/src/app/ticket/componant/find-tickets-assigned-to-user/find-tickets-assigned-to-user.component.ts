@@ -36,7 +36,7 @@ constructor(private service :ticketService,private toastService :ToastrService,p
     this.findTicketsAssignedToUser();
 console.log(this.findTicketsAssignedToUser())
   }
-  
+
 
   ngOnInit(): void {
     this.findTicketsAssignedToUser();
@@ -51,12 +51,12 @@ console.log(this.findTicketsAssignedToUser())
       return;
     }
     console.log('ID utilisateur:', this.iduser);
-  
+
     this.service.findTicketsAssignedToUser(this.iduser).subscribe(
       (response ) => {
         this.tickets = response ;
         console.log('Tickets recived:', response );
-        console.log(this.tickets); 
+        console.log(this.tickets);
        // this.cdr.detectChanges();
       },
       (error) => {
@@ -107,12 +107,12 @@ console.log(this.findTicketsAssignedToUser())
       this.errorMessage = 'Erreur : ID du ticket invalide';
       return;
     }
-    
+
     // Make the service call to complete the ticket
     this.service.completeTicket(idTicket, this.iduser).subscribe(
       (response) => {
         console.log('Ticket complété avec succès', response);
-        ticket.statusType = 'COMPLETED'; 
+        ticket.statusType = 'COMPLETED';
         this.toastService.success("Ticket complété avec succès");
         this.findTicketsAssignedToUser(); // Refresh the ticket list
        // this.cdr.detectChanges();
@@ -124,7 +124,7 @@ console.log(this.findTicketsAssignedToUser())
       }
     );
   }
-  
+
   selectTicket(ticket: Ticket) {
     this.selectedTicket = ticket;
     localStorage.setItem('ticketid', ticket.ticketid?.toString() ?? '');
@@ -139,14 +139,14 @@ console.log(this.findTicketsAssignedToUser())
   requestPurchase() {
     if (this.selectedTicket) {
       localStorage.setItem('ticketid', this.selectedTicket.ticketid.toString());
-      this.router.navigate(['/Purchase']); 
+      this.router.navigate(['/Purchase']);
     }
   }
 
 private initWebSocket() {
     if (this.keycloakService.keycloak.tokenParsed?.sub) {
       console.log('User ID:', this.keycloakService.keycloak.tokenParsed.sub);
-      let ws = new SockJS('http://localhost:8081/ws');
+      let ws = new SockJS('http://backend.backend.svc.cluster.local:8081/ws');
       this.socketClient = Stomp.over(ws);
 
       const notificationSubUrl = `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/notifications`;

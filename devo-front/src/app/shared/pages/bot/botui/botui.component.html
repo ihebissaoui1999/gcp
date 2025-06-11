@@ -1,0 +1,6 @@
+<div>
+  <button id="startButton" class="btn btn-outline-primary" (click)="startWebRTC()">Start WebRTC</button>
+  <p id="status">Status: {{ correspondence}},{{recognition}},{{recognition}}</p>
+  <button id="stopButton" class="btn btn-outline-danger" (click)="stopWebRTC()" *ngIf="isWebRTCActive">Stop WebRTC</button>
+  <p id="status"></p>
+  </div>

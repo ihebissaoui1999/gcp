@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
         - name: keycloak
-          image: quay.io/keycloak/keycloak:26.1.1
-          args: ["start-dev", "--http-relative-path=/auth"]
+          image: iheb1999/keycloaktls
+          args: ["start-dev"]
           env:
             - name: KEYCLOAK_ADMIN
               value: admin
@@ -31,7 +31,15 @@ spec:
             - name: KC_HTTP_ENABLED
               value: "true"
             - name: KC_HTTPS_ENABLED
-              value: "false"
+              value: "true"
+            - name: KEYCLOAK_FRONTEND_URL
+              value: https://34.81.124.116:8443/
+            - name: KC_HTTPS_CERTIFICATE_FILE
+              value: /etc/x509/https/tls.crt
+            - name: KC_HTTPS_CERTIFICATE_KEY_FILE
+              value: /etc/x509/https/tls.key
+            - name: KC_HTTPS_PORT
+              value: "8443"
             - name: KC_DB
               value: postgres
             - name: KC_DB_USERNAME
@@ -47,7 +55,16 @@ spec:
                   key: POSTGRES_DB
             - name: KC_DB_URL
               value: jdbc:postgresql://postgres-db/$(POSTGRES_DB)
+          volumeMounts:
+           - name: https-cert
+             mountPath: /etc/x509/https
+             readOnly: true
 
           ports:
             - containerPort: 8080
+            - containerPort: 8443
+      volumes:
+        - name: https-cert
+          secret:
+            secretName: keycloak-tls
 

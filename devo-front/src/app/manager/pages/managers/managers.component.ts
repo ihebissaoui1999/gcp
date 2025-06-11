@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { SidebarComponent } from '../../../shared/components/sidebar/sidebar.component';
 import { paymentService } from '../../../services/services/payment.service';
@@ -16,7 +16,7 @@ import * as Stomp from 'stompjs';
   styleUrl: './managers.component.css'
 })
 export class ManagersComponent implements OnInit {
- 
+
   payment :Payment [] =[];
   paymentt :Payment  ={};
   iduser: string | null = localStorage.getItem('userId');
@@ -29,7 +29,7 @@ notificationsSubscription :any;
   socketClient: any = null;
 
 
-  constructor(private service :paymentService ,private toastService: ToastrService,private keycloakService: KeycloakService ){
+  constructor(private service :paymentService ,private toastService: ToastrService,private keycloakService: KeycloakService, private ngZone: NgZone, private crd : ChangeDetectorRef){
 }
 ngOnInit(): void {
   this.loadPayments();
@@ -41,6 +41,7 @@ loadPayments(): void {
   this.service.getPaymentOrder().subscribe({
     next: (data) => {
       this.payment = data;
+      this.crd.detectChanges();
     },
     error: (err) => {
       console.error('Erreur lors du chargement des paiements:', err);
@@ -76,31 +77,38 @@ verifyPayment(paymentid?: number): void {
   private initWebSocket() {
       if (this.keycloakService.keycloak.tokenParsed?.sub) {
         console.log('User ID:', this.keycloakService.keycloak.tokenParsed.sub);
-        let ws = new SockJS('http://localhost:8081/ws');
+        let ws = new SockJS('http://backend.backend.svc.cluster.local:8081/ws');
         this.socketClient = Stomp.over(ws);
-    
+
         const notificationSubUrl = `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/notifications`;
-    
+
         this.socketClient.connect(
           { 'Authorization': 'Bearer ' + this.keycloakService.keycloak.token },
           () => {
             this.socketClient.subscribe(
               notificationSubUrl,
               (message: any) => {
+                this.ngZone.run(()=> {
                 console.log('Received notification message:', message.body);
                 const notification: Notification = JSON.parse(message.body);
-                
+
                 if (notification) {
                   switch (notification.notificationStatus) {
                     case 'ADDED':
+                      this.loadPayments();
+                      this.crd.detectChanges();
+                      break;
                     case 'ACCEPTED':
                     case 'COMPLETED':
+                      this.loadPayments();
                       this.toastService.info(notification.content, notification.notificationStatus);
                       break;
                     default:
                       console.warn('Unknown notification status:', notification.notificationStatus);
                   }
                 }
+                });
+
               },
               () => console.error('Error while connecting to WebSocket for notifications')
             );

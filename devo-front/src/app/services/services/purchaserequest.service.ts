@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
   providedIn: 'root'
 })
 export class purchaseService {
-  private apiUrl = 'http://backend.backend.svc.cluster.local:8081/api/v1/purchaseReq';
+  private apiUrl = '/api/v1/purchaseReq';
 
 
   constructor(private http: HttpClient) {}

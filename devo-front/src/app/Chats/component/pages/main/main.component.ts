@@ -24,7 +24,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
   messages: { sender: string, content: string }[] = [];
-  userMessage: string = ''; 
+  userMessage: string = '';
 
   selectedChat: ChatResponse = {};
   chats: Array<ChatResponse> = [];
@@ -68,7 +68,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
     } else {
       console.error("Aucun chatId fourni dans l'URL !");
     }
-    
+
   }
 
   chatSelected(chatResponse: ChatResponse) {
@@ -120,13 +120,13 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
     this.isLoading = true;
     console.log('ffffffffff');
-    
+
     const lastUserMessage = this.chatMessages[this.chatMessages.length - 1]?.content || '';
     this.geminiService.getResponse(lastUserMessage).subscribe(
       (response: any) => {
         // Vérifier si la réponse contient des candidats et du texte
         const aiResponse = response?.candidates?.[0]?.content?.parts?.[0]?.text || 'Aucune réponse reçue.';
-  
+
         // Création du message conforme à `MessageResponse`
         const aiMessage: MessageResponse = {
           id: Date.now().toString(), // ID temporaire
@@ -138,7 +138,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
           media: [], // Compatible avec l'interface
           state: 'SENT' // État du message
         };
-  
+
         this.chatMessages.push(aiMessage);
         this.isLoading = false;
       },
@@ -158,11 +158,11 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
     );
   }
-  
-  
-  
-  
-  
+
+
+
+
+
   keyDown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       this.sendMessage();
@@ -224,20 +224,20 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
     const payload = {
       'chat-id': this.selectedChat?.id as string
     };
-  
+
     console.log(" Données envoyées au PATCH :", payload);
-  
+
     if (!payload['chat-id']) {
       console.error(" Erreur : L'ID du chat est manquant !");
       return;
     }
-  
+
     this.messageService.setMessageToSeen(payload).subscribe({
       next: () => console.log(" Message marqué comme vu"),
       error: (err) => console.error(" Erreur PATCH :", err)
     });
   }
-  
+
 
   private getAllChats() {
     this.chatService.getChatsByReceiver()
@@ -253,11 +253,11 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
       console.error(" Erreur : L'ID du chat est manquant !");
       return;
     }
-  
+
     this.messageService.getAllMessages$Response({ 'chat-id': chatId }).subscribe({
       next: (response) => {
         console.log(" Réponse brute du serveur (Blob) :", response);
-    
+
         // Vérifie que response.body est un Blob
         if (response.body instanceof Blob) {
           // Convertir le Blob en texte
@@ -267,7 +267,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
               // Parser la réponse en JSON
               const jsonResponse = JSON.parse(reader.result as string);
               console.log(" Réponse convertie en JSON :", jsonResponse);
-    
+
               // Vérifie si la réponse est un tableau
               if (Array.isArray(jsonResponse)) {
                 this.chatMessages = jsonResponse; // Assigner correctement un tableau de MessageResponse
@@ -278,7 +278,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
               console.error(" Erreur lors du parsing du JSON :", error);
             }
           };
-    
+
           reader.readAsText(response.body);  // Lire le Blob comme texte
         } else {
           console.error(" La réponse n'est pas un Blob !");
@@ -288,21 +288,21 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
         console.error(" Erreur lors de la récupération des messages :", err);
       }
     });
-      
-    
+
+
   }
-  
-  
-  
-  
+
+
+
+
 
 
   private initWebSocket() {
     if (this.keycloakService.keycloak.tokenParsed?.sub) {
       console.log('User ID:', this.keycloakService.keycloak.tokenParsed.sub);
-      let ws = new SockJS('http://localhost:8081/ws');
+      let ws = new SockJS('http://backend.backend.svc.cluster.local:8081/ws');
       this.socketClient = Stomp.over(ws);
-  
+
       // Souscription au canal '/chat' pour recevoir des messages de chat
       const chatSubUrl = `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/chat`;
       const notificationSubUrl = `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/notifications`;
@@ -319,10 +319,10 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
             },
             () => console.error('Error while connecting to WebSocket for chat')
           );
-  
+
           // Souscription au canal '/notification' pour recevoir des notifications de type "notification"
           console.log('Subscribing to notifications channel at:', notificationSubUrl);
-          
+
           this.socketClient.subscribe(
             notificationSubUrl,
             (message: any) => {
@@ -349,16 +349,16 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
       );
     }
   }
-  
+
 
   private handleNotification(notification: Notification) {
     if (!notification) return;
-  
+
     if (!Array.isArray(this.chats)) {
       console.error('Erreur: this.chats n\'est pas un tableau', this.chats);
       this.chats = []; // On réinitialise pour éviter l'erreur
     }
-  
+
     if (this.selectedChat && this.selectedChat.id === notification.chatId) {
       switch (notification.type) {
         case 'MESSAGE':
@@ -398,7 +398,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
     }
   }
-  
+
 
   private getSenderId(): string {
     if (this.selectedChat.senderId === this.keycloakService.userId) {

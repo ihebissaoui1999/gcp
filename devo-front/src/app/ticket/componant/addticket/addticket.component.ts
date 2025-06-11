@@ -37,12 +37,12 @@ export class AddticketComponent implements OnInit{
 
 
   calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin], 
-    initialView: 'dayGridMonth', 
-    weekends: true, 
-    events: [], 
-    eventColor: '#e02e2e', 
-    eventTextColor: '#e02e2e', 
+    plugins: [dayGridPlugin],
+    initialView: 'dayGridMonth',
+    weekends: true,
+    events: [],
+    eventColor: '#e02e2e',
+    eventTextColor: '#e02e2e',
     headerToolbar: {
       left: 'prev,next ',
       center: 'title',
@@ -66,8 +66,8 @@ export class AddticketComponent implements OnInit{
     this.service.addTicket(this.ticket, this.iduser).subscribe(
       response => {
         console.log('Ticket ajouté avec succès', response);
-        this.toastService.success("Ticket ajouté avec succès")
-        this.ticket = {}; 
+        this.toastService.success("Ticket added successfully")
+        this.ticket = {};
         this.cdr.detectChanges();
       },
       error => {
@@ -85,12 +85,12 @@ export class AddticketComponent implements OnInit{
       return;
     }
     console.log('ID utilisateur:', this.iduser);
-  
+
     this.service.getticketbyuser(this.iduser).subscribe(
       (response ) => {
         this.tickets = response ;
         console.log('Tickets reçus:', response );
-        console.log(this.tickets); 
+        console.log(this.tickets);
         this.cdr.detectChanges();
         this.calendarOptions.events = this.tickets.map(ticket => ({
           title: ticket.title,
@@ -107,11 +107,11 @@ export class AddticketComponent implements OnInit{
   private initWebSocket() {
     if (this.keycloakService.keycloak.tokenParsed?.sub) {
       console.log('User ID:', this.keycloakService.keycloak.tokenParsed.sub);
-      let ws = new SockJS('http://localhost:8081/ws');
+      let ws = new SockJS('http://backend.backend.svc.cluster.local:8081/ws');
       this.socketClient = Stomp.over(ws);
-  
+
       const notificationSubUrl = `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/notifications`;
-  
+
       this.socketClient.connect(
         { 'Authorization': 'Bearer ' + this.keycloakService.keycloak.token },
         () => {
@@ -120,7 +120,7 @@ export class AddticketComponent implements OnInit{
             (message: any) => {
               console.log('Received notification message:', message.body);
               const notification: Notification = JSON.parse(message.body);
-              
+
               if (notification) {
                 this.notificationss.unshift(notification)
                 switch (notification.notificationStatus) {
@@ -141,5 +141,5 @@ export class AddticketComponent implements OnInit{
       );
     }
   }
-  
+
 }

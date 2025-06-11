@@ -1,7 +1,7 @@
 
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
-import { Component, input, InputSignal, OnInit, output, signal } from '@angular/core';
+import { Component, input, InputSignal, OnInit, output, signal, ViewChild } from '@angular/core';
 
 import { CommonModule, DatePipe } from '@angular/common';
 import { ChatResponse, MessageResponse, UserResponse } from '../../../services/models';
@@ -17,18 +17,30 @@ import { BaseChartDirective } from 'ng2-charts';
 import {  ChartConfiguration, ChartData, ChartType,Chart, registerables } from 'chart.js';
 import { ticketService } from '../../../services/services/ticket.service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { HttpClient, HttpErrorResponse, HttpEventType } from '@angular/common/http';
+import { AiService } from '../../../services/services/ai.service';
+import { FormsModule } from '@angular/forms';
+import { MarkdownComponent,MarkdownModule  } from 'ngx-markdown';
+import { BotuiComponent } from '../bot/botui/botui.component';
 Chart.register(...registerables);
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterOutlet,RouterLink,RouterLinkActive,SidebarComponent,CommonModule,BaseChartDirective,PdfViewerModule],
+  imports: [RouterOutlet,RouterLink,RouterLinkActive,SidebarComponent,CommonModule,BaseChartDirective,PdfViewerModule,CommonModule,FormsModule,MarkdownComponent,BotuiComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
 
+  @ViewChild(BotuiComponent) botUI!: BotuiComponent;
+
+startWebRTCFromDashboard(): void {
+    if (this.botUI) {
+      this.botUI.startWebRTC();
+    }
+  }
     iduser: string | null = localStorage.getItem('userId');
   messages: { sender: string, content: string }[] = [];
-  userMessage: string = ''; 
+  userMessage: string = '';
 
   selectedChat: ChatResponse = {};
   chats: Array<ChatResponse> = [];
@@ -38,6 +50,10 @@ export class DashboardComponent implements OnInit {
   showEmojis = false;
   isLoading=false;
     errorMessage: string | null = null;
+
+  question: any;
+  response: any;
+
 
   private notificationSubscription: any;
 
@@ -102,15 +118,16 @@ userTicketChartOptions: ChartConfiguration['options'] = {
     private userService: UserService,
     private keycloakService: KeycloakService,
         private toastService :ToastrService,
-        private ticketService :ticketService
-  ) {
+        private ticketService :ticketService,
+        private  aiService : AiService
+   ) {
   }
     ngOnInit(): void {
     this.initWebSocket();
     this.getAllChats();
-    this.loadTicketData();  
+    this.loadTicketData();
     this.loadUserTickets();
-    
+
   }
 
 downloadTickets(): void {
@@ -191,7 +208,7 @@ downloadTickets(): void {
       }).subscribe({
         next: async (res) => {
           console.log("📩 Réponse du backend après création du chat :", res);
-    
+
           // Convertir la réponse en JSON si c'est un Blob
           let responseBody;
           if (res instanceof Blob) {
@@ -205,14 +222,14 @@ downloadTickets(): void {
           } else {
             responseBody = res;
           }
-    
+
           console.log("📝 Réponse après conversion :", responseBody);
-    
+
           if (!responseBody.response) {
             console.error("❌ Erreur : L'ID du chat est manquant !");
             return;
           }
-    
+
           const chat: ChatResponse = {
             id: responseBody.response,  // ID maintenant accessible
             name: contact.firstName + ' ' + contact.lastName,
@@ -221,14 +238,14 @@ downloadTickets(): void {
             senderId: this.keycloakService.userId,
             receiverId: contact.id
           };
-    
+
           // Mettre à jour la liste des chats
           this.chatsList = [chat, ...this.chatsList];
-    
-          // Sélectionne le chat 
+
+          // Sélectionne le chat
           this.selectedChat = chat;
           console.log("Chat sélectionné :", this.selectedChat);
-    
+
           this.searchNewContact = false;
           this.chatSelected.emit(chat);
         },
@@ -242,13 +259,13 @@ downloadTickets(): void {
      private initWebSocket() {
         if (this.keycloakService.keycloak.tokenParsed?.sub) {
           console.log('User ID:', this.keycloakService.keycloak.tokenParsed.sub);
-          let ws = new SockJS('http://localhost:8081/ws');
+          let ws = new SockJS('http://backend.backend.svc.cluster.local:8081/ws');
           this.socketClient = Stomp.over(ws);
-      
+
           // Souscription au canal '/chat' pour recevoir des messages de chat
           const chatSubUrl = `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/chat`;
           const notificationSubUrl = `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/notifications`;
-    
+
           this.socketClient.connect(
             { 'Authorization': 'Bearer ' + this.keycloakService.keycloak.token },
             () => {
@@ -261,10 +278,10 @@ downloadTickets(): void {
                 },
                 () => console.error('Error while connecting to WebSocket for chat')
               );
-      
+
               // Souscription au canal '/notification' pour recevoir des notifications de type "notification"
               console.log('Subscribing to notifications channel at:', notificationSubUrl);
-              
+
               this.socketClient.subscribe(
                 notificationSubUrl,
                 (message: any) => {
@@ -281,7 +298,7 @@ downloadTickets(): void {
                       case 'COMPLETED':
                         this.toastService.info(notification.content,notification.notificationStatus);
                         break;
-    
+
                   }
                  }
                 },
@@ -293,12 +310,12 @@ downloadTickets(): void {
       }
        private handleNotification(notification: Notification) {
     if (!notification) return;
-  
+
     if (!Array.isArray(this.chats)) {
       console.error('Erreur: this.chats n\'est pas un tableau', this.chats);
       this.chats = []; // On réinitialise pour éviter l'erreur
     }
-  
+
     if (this.selectedChat && this.selectedChat.id === notification.chatId) {
       switch (notification.type) {
         case 'MESSAGE':
@@ -346,7 +363,7 @@ downloadTickets(): void {
         }
       });
   }
-  
+
   get fullName() {
     return this.keycloakService.keycloak?.tokenParsed?.['given_name'];
   }
@@ -375,6 +392,26 @@ downloadTickets(): void {
     }
   });
 }
+   askAgent() {
+    this.response = '';
+    this.isLoading = true;
+
+    this.aiService.askAgent(this.question).subscribe({
+      next: event => {
+        if (event.type === HttpEventType.DownloadProgress && 'partialText' in event) {
+          this.response = (event as any).partialText;
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Erreur lors de la requête :', error);
+        this.response = 'Une erreur est survenue. Veuillez réessayer.';
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
   }
 
 

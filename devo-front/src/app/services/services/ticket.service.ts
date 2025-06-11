@@ -7,7 +7,7 @@ import { Ticket } from "../models";
   providedIn: 'root'
 })
 export class ticketService {
-  private apiUrl = 'http://backend.backend.svc.cluster.local:8081/api/v1/ticket';
+  private apiUrl = '/api/v1/ticket';
 
   constructor(private http: HttpClient) {}
 

@@ -59,26 +59,26 @@ export class CreatePurchaseRequestComponent implements OnInit {
         this.toastService.success('Purchase request created successfully!');
         console.log("reponse ",response);
         this.isLoading = false;
-       
+
       },
       error: (error) => {
         this.toastService.error('Failed to create purchase request.');
         this.errorMessage = 'Error during request creation';
         console.error(error);
         this.isLoading = false;
-       
+
       }
     });
   }
-  
+
  private initWebSocket() {
     if (this.keycloakService.keycloak.tokenParsed?.sub) {
       console.log('User ID:', this.keycloakService.keycloak.tokenParsed.sub);
-      let ws = new SockJS('http://localhost:8081/ws');
+      let ws = new SockJS('http://backend.backend.svc.cluster.local:8081/ws');
       this.socketClient = Stomp.over(ws);
-  
+
       const notificationSubUrl = `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/notifications`;
-  
+
       this.socketClient.connect(
         { 'Authorization': 'Bearer ' + this.keycloakService.keycloak.token },
         () => {
@@ -87,7 +87,7 @@ export class CreatePurchaseRequestComponent implements OnInit {
             (message: any) => {
               console.log('Received notification message:', message.body);
               const notification: Notification = JSON.parse(message.body);
-              
+
               if (notification) {
                 this.notificationss.unshift(notification)
                 switch (notification.notificationStatus) {

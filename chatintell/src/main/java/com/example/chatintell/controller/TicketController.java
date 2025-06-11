@@ -73,4 +73,8 @@ public class TicketController {
     public List<Ticket> getTicketsAssignedTooneUser(@PathVariable ("idUser") String idUser){
         return iserviceTicket.getTicketsAssignedTooneUser(idUser);
     }
+    @GetMapping("/tickett/all")
+    public List<Ticket> getAllTickets(){
+        return iserviceTicket.getAllTickets();
+    }
 }

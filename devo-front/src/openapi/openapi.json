@@ -6,7 +6,7 @@
     },
     "servers": [
       {
-        "url": "http://backend:8081",
+        "url": "http://localhost:8081",
         "description": "Generated server url"
       }
     ],
@@ -359,7 +359,7 @@
               "authorizationUrl": "http://localhost:8080/realms/bnns/protocol/openid-connect/auth",
               "tokenUrl": "http://localhost:8080/realms/bnns/protocol/openid-connect/token",
               "scopes": {
-
+  
               }
             }
           }

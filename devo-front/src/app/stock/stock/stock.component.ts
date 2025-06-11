@@ -59,7 +59,8 @@ export class StockComponent implements OnInit{
       formData.append('image', this.selectedFile);
 
       this.stockService.addstock(formData, this.iduser).subscribe({
-        next: res => console.log(' Stock ajouté :', res),
+        next: res =>{ console.log(' Stock ajouté :', res),this.toastService.success("Stock added successfully")},
+
         error: err => console.error(' Erreur :', err)
       });
     } else {
@@ -69,11 +70,11 @@ export class StockComponent implements OnInit{
   private initWebSocket() {
       if (this.keycloakService.keycloak.tokenParsed?.sub) {
         console.log('User ID:', this.keycloakService.keycloak.tokenParsed.sub);
-        let ws = new SockJS('http://localhost:8081/ws');
+        let ws = new SockJS('http://backend.backend.svc.cluster.local:8081/ws');
         this.socketClient = Stomp.over(ws);
-    
+
         const notificationSubUrl = `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/notifications`;
-    
+
         this.socketClient.connect(
           { 'Authorization': 'Bearer ' + this.keycloakService.keycloak.token },
           () => {
@@ -82,7 +83,7 @@ export class StockComponent implements OnInit{
               (message: any) => {
                 console.log('Received notification message:', message.body);
                 const notification: Notification = JSON.parse(message.body);
-                
+
                 if (notification) {
                   this.notificationss.unshift(notification)
                   switch (notification.notificationStatus) {

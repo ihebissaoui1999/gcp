@@ -30,13 +30,13 @@
     <div class="left-section">
       <!-- Formulaire d'ajout de ticket -->
       <div class="Purchase-form">
-        <h2>Ajouter un Purchase</h2>
+        <h2>Request Purchase</h2>
         <form (ngSubmit)="createPurchaseRequest()">
 
           <label for="description">Description :</label>
           <textarea id="description" [(ngModel)]="purchaseRequest.description" name="description" required></textarea>
     
-          <button type="submit">Ajouter</button>
+          <button type="submit">Add</button>
         </form>
         <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
       </div>

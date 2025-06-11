@@ -91,18 +91,47 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4>Devoteam Tunisie est une entreprise spécialisée dans le domaine des services numériques depuis plus de 20 vingt ans. Nous appartenons à un Groupe international reconnu sur le marché du conseil et de l’intégration des Services IT.</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div id="chart-profile-visit"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                      <div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h4>
+          Devoteam Tunisie est une entreprise spécialisée dans le domaine des services numériques depuis plus de vingt ans. 
+          Nous appartenons à un Groupe international reconnu sur le marché du conseil et de l’intégration des Services IT.
+        </h4>
+      </div>
+      <div class="card-body">
+        <div id="chart-profile-visit"></div>
+
+        <!-- Section ajoutée : Ask Agent -->
+        <div class="p-3 mt-4">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <input [(ngModel)]="question" type="text" class="form-control" style="width: 80%; display: inline">
+                <button class="btn btn-outline-info" (click)="askAgent()">Ask Agent</button>
+              </div>
+              <app-botui> </app-botui>
+
+              <div class="p-3">
+                @if (response) {
+                  <markdown [data]="response"></markdown>
+                }
+              </div>
+            </div>
+            <div class="col-md-6">
+              <!-- Vous pouvez ajouter ici un contenu complémentaire, ex. image, autre info, etc. -->
+            </div>
+          </div>
+        </div>
+        <!-- Fin de la section ajoutée -->
+
+      </div>
+    </div>
+  </div>
+</div>
+
+            
                         <div class="row">
                             
                             <div class="col-12 col-xl-8">

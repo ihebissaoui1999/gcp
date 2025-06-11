@@ -89,19 +89,53 @@ public class PurchaseService implements IservicePurchase {
 
     private Map<String, ProductWithQuantity> selectProductsWithAI(String description, Map<String, Product> allProducts) {
         log.info("Produits scrapés disponibles : {}", allProducts.keySet());
-        String prompt = "Analyse cette description de demande d'achat et sélectionne les produits pertinents parmi la liste disponible. "
-                + "Instructions strictes : "
-                + "- Identifie chaque produit et sa quantité exacte telle que spécifiée dans la description (ex. '2 souris' signifie quantité 2). "
-                + "- Indique le nom EXACT du produit tel qu'il apparaît dans la liste fournie, sans modification (même casse, espaces, ponctuation). "
-                + "- Retourne chaque produit sur une nouvelle ligne au format 'quantité nom_exact_du_produit' (ex. '2 souris sans fil advance feel - noir'). "
-                + "- Si un produit n’a pas de quantité spécifiée, utilise 1 comme défaut. "
-                + "- Ne retourne QUE les lignes de produits, sans texte supplémentaire ni explication. "
-                + "Description: " + description
-                + "\nListe des produits disponibles: " + getAvailableProductsList(allProducts);
 
+        // 1. Définir les budgets
+        float budgetTotal = 15000000f; // Budget global : 15 000 000 DT
+
+        Map<String, Float> budgetParCategorie = new HashMap<>();
+
+        budgetParCategorie.put("souris", 50f);
+        budgetParCategorie.put("clavier", 50f);
+        budgetParCategorie.put("ecran", 500f);
+        budgetParCategorie.put("disquedur", 100f);
+        budgetParCategorie.put("imprimante", 1500f);
+        budgetParCategorie.put("microphone", 100f);
+        budgetParCategorie.put("webcam", 40f);
+        budgetParCategorie.put("casque", 60f);
+        budgetParCategorie.put("usb", 30f);
+        budgetParCategorie.put("bureau", 500000f);
+        budgetParCategorie.put("chaise", 1000000f);
+        budgetParCategorie.put("pc", 3000000f);
+
+
+        // 2. Créer les contraintes de budget sous forme de texte
+        StringBuilder contraintesBudget = new StringBuilder();
+        contraintesBudget.append("- Le budget total pour tous les produits est de ")
+                .append(String.format("%.2f", budgetTotal)).append(" DT.\n");
+
+        for (Map.Entry<String, Float> entry : budgetParCategorie.entrySet()) {
+            contraintesBudget.append(String.format("- Le budget pour la catégorie '%s' ne doit pas dépasser %.2f DT.\n",
+                    entry.getKey(), entry.getValue()));
+        }
+
+        // 3. Créer le prompt à envoyer à Gemini
+        String prompt = "Analyse cette description de demande d'achat et sélectionne les produits pertinents parmi la liste disponible. "
+                + "Instructions strictes :\n"
+                + "- Identifie chaque produit et sa quantité exacte telle que spécifiée dans la description (ex. '2 souris' signifie quantité 2).\n"
+                + "- Indique le nom EXACT du produit tel qu'il apparaît dans la liste fournie, sans modification (même casse, espaces, ponctuation).\n"
+                + "- Retourne chaque produit sur une nouvelle ligne au format 'quantité nom_exact_du_produit' (ex. '2 souris sans fil advance feel - noir').\n"
+                + "- Si un produit n’a pas de quantité spécifiée, utilise 1 comme défaut.\n"
+                + "- Ne retourne QUE les lignes de produits, sans texte supplémentaire ni explication.\n"
+                + contraintesBudget
+                + "Description: " + description + "\n"
+                + "Liste des produits disponibles: " + getAvailableProductsList(allProducts);
+
+        log.info("Prompt envoyé à Gemini:\n{}", prompt);
         String response = geminiService.sendMessageToGemini(prompt);
         log.info("Gemini response: {}", response);
 
+        // 4. Traitement de la réponse Gemini
         Map<String, ProductWithQuantity> selectedProducts = new HashMap<>();
         String productLines = extractTextFromGeminiResponse(response);
         log.info("Lignes extraites de Gemini : {}", productLines);
@@ -159,7 +193,6 @@ public class PurchaseService implements IservicePurchase {
 
         return selectedProducts;
     }
-
     private Product findAlternativeProduct(String productName, Map<String, Product> allProducts) {
         String lowerProductName = productName.toLowerCase().trim();
         if (lowerProductName.contains("souris")) {

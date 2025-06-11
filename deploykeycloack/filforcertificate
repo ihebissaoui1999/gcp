@@ -1,0 +1,13 @@
+1- openssl genpkey -algorithm RSA -out privkey.pem 
+Now, generate the CSR (Certificate Signing Request), making sure to include the SAN extension.
+2- openssl req -new -key privkey.pem -out csr.pem -config san.cnf
+3- san.cnf 
+4. Generate the Self-Signed Certificate (Optional)
+If you want to create a self-signed certificate (e.g., for testing), you can use the following command:
+
+openssl x509 -req -in csr.pem -signkey privkey.pem -out keycloak.crt.pem  -extfile san.cnf
+
+
+//////////////////////////////
+
+kubectl create secret tls  keycloak-tls --cert=keycloak.crt.pem --key=privkey.pem -n keycloak
